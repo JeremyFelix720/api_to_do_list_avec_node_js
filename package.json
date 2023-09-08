@@ -1,0 +1,27 @@
+{
+  "name": "api_to_do_list_avec_node_js",
+  "version": "1.0.0",
+  "description": "C'est l'API qui interegit avec le projet du brief typescript to do list",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently -k -n \"Typescript,Node\" -p \"[{name}]\" -c \"blue,green\" \"tsc --watch\" \"nodemon dist/index.js\"",
+    "start": "tsc && node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JeremyFelix720/api_to_do_list_avec_node_js.git"
+  },
+  "author": "Jérémy FELIX",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JeremyFelix720/api_to_do_list_avec_node_js/issues"
+  },
+  "homepage": "https://github.com/JeremyFelix720/api_to_do_list_avec_node_js#readme",
+  "devDependencies": {
+    "@types/node": "^20.5.9",
+    "concurrently": "^8.2.1",
+    "nodemon": "^3.0.1",
+    "typescript": "^5.2.2"
+  }
+}
