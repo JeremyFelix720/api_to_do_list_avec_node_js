@@ -1,0 +1,13 @@
+GET http://localhost:3031/
+###
+GET http://localhost:3031/toto/
+###
+GET http://localhost:3031/add_task/:description/
+###
+GET http://localhost:3031/update_task/:id/:active/
+###
+GET http://localhost:3031/remove_task/:id/
+###
+GET http://localhost:3031/remove_all_tasks/:id/
+###
+GET http://localhost:3031/get_all_tasks/:id/
