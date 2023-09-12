@@ -19,6 +19,8 @@ console.log("dbPort = " + dbUsername, "/ dbPassword = " + dbPassword, "/ dbName 
 
 
 
+// Copié-collé du code de Thomas (pour créer la BDD locale avec SQLite) :
+
 import { DataTypes, Sequelize } from "sequelize"
 
 const sequelize = new Sequelize({
@@ -59,47 +61,95 @@ sequelize
 
 
 
-
-
 app.get('/', (req, res) => {
   res.send('Hello World!')
+
+  Todo.create({
+    name: "toto",
+    status: false
+  })
+
+  Todo.create({
+    name: "tata",
+    status: true
+  })
+
+  Todo.create({
+    name: "patate",
+    status: false
+  })
 })
 
 app.get('/toto', (req, res) => {
     res.send('Toto')
   })
 
+
 // ROUTES EN LIEN AVEC LA TO DO LIST :
 
 // Ajout d'une tache dans la liste lorsque le bouton de rajout est cliqué.
 app.get('/add_task/:description', (req, res) => {
-    //let taskDescription = preq.params.description
-    //res.send()
+    let taskDescription = req.params.description
+
+    // Avec l'ORM "Sequalize", rempli les champs "name" et "status" dans la BDD (table SQLite "Todos" ; voir fichier "db.sqlite")
+    Todo.create({
+      name: taskDescription,
+      status: false
+    })
+
+    console.log(taskDescription)
+    res.send("La tache suivante a bien été rajoutée : " + taskDescription)
 })
 
+
 // Mise à jour d'une tache (active / non-active) de la liste lorsqu'une coche est cliquée.
-app.get('/update_task/:id/:active', (req, res) => {
-    //let idTask = preq.params.id
-    //let activeTask = preq.params.active
-    //res.send()
+app.patch('/update_task/:id/:status', async (req, res) => {
+  let idTask = req.params.id
+  let statusTask = req.params.status
+  //let idTask = 2
+  //let statusTask = true
+
+  // Avec l'ORM "Sequalize", change le status de la tache dans la BDD qui a pour id celui entré en parametre.
+  const updatedTodo = await Todo.update({ status: statusTask }, {
+    where: {
+      id: idTask
+    }
+  })
+  
+  console.log("idTask = " + idTask + " / statusTask = " + statusTask)
+  res.send("La tache avec pour id : " + idTask + " a bien été mis à jour.")
 })
 
 // Suppression d'une tache lorsque la croix est cliquée.
-app.get('/remove_task/:id', (req, res) => {
-    //let idTask = preq.params.id
-    //res.send()
+app.delete('/remove_task/:id', async  (req, res) => {
+  let idTask = req.params.id
+  //let idTask = 2
+
+  // Avec l'ORM "Sequalize", supprime la tache dans la BDD qui a pour id celui entré en parametre.
+  await Todo.destroy({
+    where: {
+      id: idTask
+    }
+  });
+  
+  res.send("La tache avec pour id : " + idTask + " a bien été supprimée.")
 })
 
 // Suppression de toutes les taches lorsque le bouton tout en bas est cliqué.
-app.get('/remove_all_tasks/:id', (req, res) => {
-    //let idTask = preq.params.id
-    //res.send()
+app.delete('/remove_all_tasks/:id', (req, res) => {
+    let idTask = req.params.id
+    res.send("Tous les éléments de la liste ont bien été supprimés.")
 })
 
-// Selection et rajout dans la liste de toutes les taches lorsque l'on raffraichit la page web.
-app.get('/get_all_tasks/:id', (req, res) => {
-    //let idTask = preq.params.id
-    //res.send()
+// Selection (et rajout ?) dans la liste de toutes les taches lorsque l'on raffraichit la page web.
+app.get('/get_all_tasks/', async (_, res) => {
+
+  // Récupère toutes les taches
+  const todos = await Todo.findAll();
+  console.log(todos.every(task => task instanceof Todo)); // true
+  console.log("All tasks:", JSON.stringify(todos, null, 2));
+  console.log(todos)
+  res.send(todos)
 })
 
 
@@ -116,3 +166,5 @@ const sequelize = new Sequelize('database', 'username', 'password', {
     host: 'localhost',
     dialect: /* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */
 /*  });*/
+
+

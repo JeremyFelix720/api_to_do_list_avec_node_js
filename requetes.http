@@ -2,12 +2,12 @@ GET http://localhost:3031/
 ###
 GET http://localhost:3031/toto/
 ###
-GET http://localhost:3031/add_task/:description/
+GET http://localhost:3031/add_task/super_tache/
 ###
-GET http://localhost:3031/update_task/:id/:active/
+GET http://localhost:3031/get_all_tasks/
 ###
-GET http://localhost:3031/remove_task/:id/
+PATCH http://localhost:3031/update_task/2/true/
 ###
-GET http://localhost:3031/remove_all_tasks/:id/
+DELETE http://localhost:3031/remove_task/3/
 ###
-GET http://localhost:3031/get_all_tasks/:id/
+DELETE http://localhost:3031/remove_all_tasks/3/
